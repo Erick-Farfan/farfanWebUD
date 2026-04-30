@@ -16,7 +16,7 @@ public class ProgAcadDAO {
             lista_P.add(new ProgAcad(2, "Ingeniería de Telemática"));
             lista_P.add(new ProgAcad(3, "Administración de Empresas"));
             lista_P.add(new ProgAcad(4, "Derecho"));
-            lista_P.add(new ProgAcad(5, "Matemática"));
+            lista_P.add(new ProgAcad(5, "Matemáticas"));
         }
     }
 }

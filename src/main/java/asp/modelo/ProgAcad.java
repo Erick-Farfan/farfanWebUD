@@ -12,7 +12,8 @@ public class ProgAcad implements Serializable {
     private int cod;
     private String nombre_prog;
 
-    public ProgAcad() {}
+    public ProgAcad() {	
+    }
 
     public ProgAcad(int cod, String nombre_prog) {
         this.cod = cod;
