@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Registro de Aspirante – FarfanWebUD</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+    <style>
+        body { background-color: #f0f4f8; }
+        .form-card { border-radius: 12px; }
+        .field-error { color: #dc3545; font-size: 0.85em; }
+        footer { background-color: #003366; color: #fff; }
+        .table thead { background-color: #003366; color: #fff; }
+    </style>
+</h:head>
+
+<h:body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark mb-4" style="background-color:#003366;">
+        <div class="container">
+            <span class="navbar-brand fw-bold">FarfanWebUD</span>
+            <a href="index.xhtml" class="btn btn-outline-light btn-sm">← Inicio</a>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+        <h1 class="text-center mb-4" style="color:#003366;">Registro de Aspirante</h1>
+
+        <div class="card shadow form-card p-4 mx-auto" style="max-width:640px;">
+
+            <h:form id="frmAspirante">
+
+                <!-- Mensaje de éxito -->
+                <h:panelGroup rendered="#{not empty asp.mensajeExito}">
+                    <div class="alert alert-success alert-dismissible mb-3" role="alert">
+                        <h:outputText value="#{asp.mensajeExito}"/>
+                    </div>
+                </h:panelGroup>
+
+                <!-- Identificación -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="id_p">No. Identificación *</label>
+                    <h:inputText id="id_p" value="#{asp.dto.id_p}" required="true"
+                                 requiredMessage="La identificación es obligatoria."
+                                 validatorMessage="Ingrese un número de identificación válido."
+                                 styleClass="form-control">
+                        <f:validateLongRange minimum="1" maximum="9999999999"/>
+                    </h:inputText>
+                    <h:message for="id_p" styleClass="field-error"/>
+                </div>
+
+                <!-- Nombres -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="nombres">Nombres *</label>
+                    <h:inputText id="nombres" value="#{asp.dto.nombres}" required="true"
+                                 requiredMessage="Los nombres son obligatorios."
+                                 validatorMessage="Mínimo 2 caracteres."
+                                 styleClass="form-control">
+                        <f:validateLength minimum="2" maximum="80"/>
+                    </h:inputText>
+                    <h:message for="nombres" styleClass="field-error"/>
+                </div>
+
+                <!-- Apellidos -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="apellidos">Apellidos *</label>
+                    <h:inputText id="apellidos" value="#{asp.dto.apellidos}" required="true"
+                                 requiredMessage="Los apellidos son obligatorios."
+                                 validatorMessage="Mínimo 2 caracteres."
+                                 styleClass="form-control">
+                        <f:validateLength minimum="2" maximum="80"/>
+                    </h:inputText>
+                    <h:message for="apellidos" styleClass="field-error"/>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="telefono">Teléfono *</label>
+                    <h:inputText id="telefono" value="#{asp.dto.telefono}" required="true"
+                                 requiredMessage="El teléfono es obligatorio."
+                                 validatorMessage="Ingrese entre 7 y 15 dígitos."
+                                 styleClass="form-control">
+                        <f:validateRegex pattern="\d{7,15}"/>
+                    </h:inputText>
+                    <h:message for="telefono" styleClass="field-error"/>
+                </div>
+
+                <!-- Correo -->
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="correo">Correo electrónico *</label>
+                    <h:inputText id="correo" value="#{asp.dto.correo}" required="true"
+                                 requiredMessage="El correo es obligatorio."
+                                 validatorMessage="Ingrese un correo válido (ej: usuario@dominio.com)."
+                                 styleClass="form-control">
+                        <f:validateRegex pattern="^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$"/>
+                    </h:inputText>
+                    <h:message for="correo" styleClass="field-error"/>
+                </div>
+
+                <!-- Programa Académico -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold" for="pro_aca">Programa Académico *</label>
+                    <h:selectOneMenu id="pro_aca" value="#{asp.dto.pro_acad.cod}"
+                                     required="true"
+                                     requiredMessage="Seleccione un programa académico."
+                                     styleClass="form-select">
+                        <f:selectItem itemValue="-1" itemLabel="-- Seleccione un programa --"
+                                      noSelectionOption="true"/>
+                        <f:selectItems value="#{asp.listaPa}" var="p"
+                                       itemValue="#{p.cod}"
+                                       itemLabel="#{p.nombre_prog}"/>
+                    </h:selectOneMenu>
+                    <h:message for="pro_aca" styleClass="field-error"/>
+                </div>
+
+                <!-- Botón registrar -->
+                <div class="d-grid">
+                    <h:commandButton value="Registrar Aspirante"
+                                     action="#{asp.registrar}"
+                                     styleClass="btn btn-primary btn-lg">
+                        <f:ajax execute="@form" render="@form"/>
+                    </h:commandButton>
+                </div>
+
+            </h:form>
+        </div>
+
+        <!-- Enlace a vista administrador -->
+        <div class="text-center mt-4">
+            <a href="admin.xhtml" class="btn btn-outline-success">
+                Ver listado de aspirantes registrados
+            </a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-3 text-center" style="background-color:#003366; color:#fff;">
+        <p class="mb-0 small">
+            Erick Mauricio Farfán Díaz · Cód. 20241578110 · Asignatura 578-302 ·
+            Universidad Distrital Francisco José de Caldas · 2026
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</h:body>
+</html>
