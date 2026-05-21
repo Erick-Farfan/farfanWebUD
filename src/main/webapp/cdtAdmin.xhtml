@@ -19,7 +19,10 @@
 
 <h:body>
 
-    <!-- Navbar -->
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{cdtBean.cargarLista}"/>
+    </f:metadata>
+
     <nav class="navbar navbar-dark mb-4" style="background-color:#003366;">
         <div class="container">
             <span class="navbar-brand fw-bold">🏦 FarfanWebUD – CDTs</span>
@@ -30,7 +33,6 @@
     <div class="container mb-5">
         <h1 class="text-center mb-4" style="color:#003366;">CDTs Registrados</h1>
 
-        <!-- Sin registros -->
         <h:panelGroup rendered="#{cdtBean.listaCdt.isEmpty()}">
             <div class="alert alert-info text-center">
                 No hay CDTs registrados aún.
@@ -38,7 +40,6 @@
             </div>
         </h:panelGroup>
 
-        <!-- Tabla de CDTs -->
         <h:panelGroup rendered="#{not cdtBean.listaCdt.isEmpty()}">
             <div class="mb-3 text-end">
                 <span class="badge bg-success fs-6">
@@ -55,8 +56,18 @@
                     </h:column>
 
                     <h:column>
+                        <f:facet name="header">Nombre</f:facet>
+                        <h:outputText value="#{c.nombre}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Correo</f:facet>
+                        <h:outputText value="#{c.correo}"/>
+                    </h:column>
+
+                    <h:column>
                         <f:facet name="header">Inversión</f:facet>
-                        <h:outputText value="#{c.inversion}">
+                        <h:outputText value="#{c.montoInversion}">
                             <f:convertNumber type="currency" currencySymbol="$"
                                              groupingUsed="true" minFractionDigits="2"/>
                         </h:outputText>
@@ -75,8 +86,8 @@
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">Ganancia</f:facet>
-                        <h:outputText value="#{c.ganancia}" styleClass="text-success fw-semibold">
+                        <f:facet name="header">Ganancia Bruta</f:facet>
+                        <h:outputText value="#{c.gananciaBruta}" styleClass="text-success">
                             <f:convertNumber type="currency" currencySymbol="$"
                                              minFractionDigits="2"/>
                         </h:outputText>
@@ -85,6 +96,14 @@
                     <h:column>
                         <f:facet name="header">Impuesto (4%)</f:facet>
                         <h:outputText value="#{c.impuesto}" styleClass="text-danger">
+                            <f:convertNumber type="currency" currencySymbol="$"
+                                             minFractionDigits="2"/>
+                        </h:outputText>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">Ganancia Neta</f:facet>
+                        <h:outputText value="#{c.gananciaNeta}" styleClass="text-success fw-semibold">
                             <f:convertNumber type="currency" currencySymbol="$"
                                              minFractionDigits="2"/>
                         </h:outputText>
@@ -102,21 +121,17 @@
             </div>
 
             <div class="text-center mt-4">
-                <a href="cdt.xhtml" class="btn btn-primary">
-                    + Registrar otro CDT
-                </a>
+                <a href="cdt.xhtml" class="btn btn-primary">+ Registrar otro CDT</a>
             </div>
         </h:panelGroup>
     </div>
 
-    <!-- Footer -->
     <footer class="py-3 text-center">
         <p class="mb-0 small">
             Erick Mauricio Farfán Díaz · Cód. 20241578110 · Asignatura 578-302 ·
             Universidad Distrital Francisco José de Caldas · 2026
         </p>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </h:body>
 </html>

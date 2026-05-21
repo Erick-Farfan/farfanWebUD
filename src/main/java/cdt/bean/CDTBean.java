@@ -1,59 +1,38 @@
 package cdt.bean;
-
 // Autor: Erick Mauricio Farfán Díaz
 import java.io.Serializable;
 import java.util.ArrayList;
 import cdt.modelo.CDT;
-import cdt.modelo.CDTDAO;
-import jakarta.enterprise.context.SessionScoped;
+import cdt.service.CDTService;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 
 @Named("cdtBean")
-@SessionScoped
+@ViewScoped
 public class CDTBean implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private CDT dto = new CDT();
-	private String mensajeExito;
+    private CDT dto = new CDT();
+    private ArrayList<CDT> listaCdt;
+    private CDTService service = new CDTService();
 
-	private ArrayList<CDT> listaCdt = CDTDAO.lista_C;
+    public CDTBean() {}
 
-	public CDTBean() {
-	}
+    public String registrar() {
+        service.registrar(dto);
+        listaCdt = service.obtenerTodos();
+        dto = new CDT();
+        return "/CDT/cdtAdmin?faces-redirect=true";
+        // Ajusta la ruta al nombre real de tu vista admin
+    }
 
-	
-	public CDT getDto() {
-		return dto;
-	}
+    public void cargarLista() {
+        listaCdt = service.obtenerTodos();
+    }
 
-	public void setDto(CDT dto) {
-		this.dto = dto;
-	}
+    public CDT getDto()                        { return dto; }
+    public void setDto(CDT dto)                { this.dto = dto; }
 
-	public String getMensajeExito() {
-		return mensajeExito;
-	}
-
-	public void setMensajeExito(String mensajeExito) {
-		this.mensajeExito = mensajeExito;
-	}
-
-	public ArrayList<CDT> getListaCdt() {
-		return listaCdt;
-	}
-
-	public void setListaCdt(ArrayList<CDT> listaCdt) {
-		this.listaCdt = listaCdt;
-	}
-
-	
-	
-	public void registrar() {
-		dto.setId(CDTDAO.lista_C.size() + 1L);
-		dto.calcular();
-		CDTDAO.lista_C.add(dto);
-		mensajeExito = "✔ CDT #" + dto.getId() + " registrado exitosamente. " + "Valor futuro: $"
-				+ String.format("%,.2f", dto.getValorFuturo());
-		dto = new CDT();
-	}
+    public ArrayList<CDT> getListaCdt()        { return listaCdt; }
+    public void setListaCdt(ArrayList<CDT> l)  { this.listaCdt = l; }
 }
